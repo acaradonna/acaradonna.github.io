@@ -5,15 +5,20 @@ title: Links
 
 # Links
 
-## Contact / Socials
-### My GitHub:
-### My LinkedIn:
-### My Music:
+## Contact
 
-## Projects [link to projects]
-## Useful Links:
-### Tools
-#### AI
-#### Dev
-#### Ableton
-### Knowledge
+{% for link in site.data.links.contact %}
+- [{{ link.name }}]({{ link.url }})
+{% endfor %}
+
+## Projects
+
+{% for link in site.data.links.projects %}
+- [{{ link.name }}]({{ link.url }})
+{% endfor %}
+
+## Resources
+
+{% for link in site.data.links.resources %}
+- [{{ link.name }}]({{ link.url }})
+{% endfor %}
