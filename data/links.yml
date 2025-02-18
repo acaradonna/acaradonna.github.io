@@ -1,0 +1,19 @@
+contact:
+  - name: GitHub
+    url: https://github.com/acaradonna
+  - name: LinkedIn
+    url: https://www.linkedin.com/in/alexander-caradonna-7a39778a/
+  - name: SoundCloud
+    url: https://soundcloud.com/alpackle
+
+projects:
+  - name: Project 1
+    url: https://example.com/project1
+  - name: Project 2
+    url: https://example.com/project2
+
+resources:
+  - name: Resource 1
+    url: https://example.com/resource1
+  - name: Resource 2
+    url: https://example.com/resource2
