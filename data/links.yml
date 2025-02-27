@@ -7,10 +7,12 @@ contact:
     url: https://soundcloud.com/alpackle
 
 projects:
-  - name: Project 1
-    url: https://example.com/project1
-  - name: Project 2
+  - name: Harmony
+    url: https://github.com/acaradonna/harmony
+    description: A next.js app where I'm building a simple AI-powered chatbot.
+  - name: Plex API Python Library
     url: https://example.com/project2
+    description: A Python library using the Plex API to do things that are normally hard to achieve with the API/UI alone
 
 resources:
   - name: Resource 1
