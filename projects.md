@@ -3,6 +3,8 @@ layout: default
 title: Projects
 ---
 
-# Projects
-## Harmony: [link]
-## Plex Python Library: [link]
+{% for project in site.data.links.projects %}
+
+## {{ project.name }}: [{{ project.description }}]({{ project.url }})
+
+{% endfor %}
