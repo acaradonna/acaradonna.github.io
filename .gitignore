@@ -1,0 +1,104 @@
+# Jekyll build output
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby dependencies
+.bundle/
+vendor/
+Gemfile.lock
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+package-lock.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# Local environment
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Jekyll instance specific
+.ruby-version
+.ruby-gemset
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Testing
+coverage/
+.nyc_output/
+.jest/
+junit.xml
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+
+# Ruby dependencies
+.bundle/
+vendor/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE/Editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local environment
+.env
+.env.local
+.env.*.local
+
+# Jekyll instance specific
+.ruby-version
+.ruby-gemset 

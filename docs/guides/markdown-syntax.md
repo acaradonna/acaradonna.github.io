@@ -1,4 +1,3 @@
-```markdown
 # Markdown Syntax Guide
 
 This document explains how to write and format text using Markdown. The examples below show the syntax and how it renders, so you can use this guide as both a reference and a learning tool.
@@ -30,7 +29,7 @@ This document explains how to write and format text using Markdown. The examples
 
 ## Introduction
 
-Markdown is a lightweight markup language that lets you format plain text. It’s used for everything from README files to documentation. In this guide, you'll learn how to create headings, paragraphs, lists, and much more.
+Markdown is a lightweight markup language that lets you format plain text. It's used for everything from README files to documentation. In this guide, you'll learn how to create headings, paragraphs, lists, and much more.
 
 ---
 
@@ -42,15 +41,19 @@ Create headings by prefixing text with one or more hash (`#`) characters. The nu
 
 ```markdown
 # Heading 1
+
 ## Heading 2
+
 ### Heading 3
 ```
 
 **Rendered:**
 
-# Heading 1
-## Heading 2
-### Heading 3
+## First Level Heading
+
+### Second Level Heading
+
+#### Third Level Heading
 
 ---
 
@@ -81,22 +84,22 @@ This is the second line.
 
 You can emphasize text using asterisks or underscores.
 
-- *Italic:* Wrap text in one asterisk or underscore.
+- _Italic:_ Wrap text in one asterisk or underscore.
 
   ```markdown
-  *This text is italic* or _this text is italic_
+  _This text is italic_ or _this text is italic_
   ```
 
 - **Bold:** Wrap text in two asterisks or underscores.
 
   ```markdown
-  **This text is bold** or __this text is bold__
+  **This text is bold** or **this text is bold**
   ```
 
-- ***Bold and Italic:*** Wrap text in three asterisks or underscores.
+- **_Bold and Italic:_** Wrap text in three asterisks or underscores.
 
   ```markdown
-  ***This text is bold and italic***
+  **_This text is bold and italic_**
   ```
 
 - ~~Strikethrough:~~ Wrap text in two tildes.
@@ -141,7 +144,7 @@ Start each item with a number and a period.
 3. Third item
 ```
 
-*Note: Numbers don’t have to be sequential in the Markdown source—Markdown will render them in order.*
+_Note: Numbers don't have to be sequential in the Markdown source—Markdown will render them in order._
 
 ### Unordered Lists
 
@@ -169,7 +172,7 @@ Wrap inline code with backticks (<code>`</code>).
 Use the `printf()` function.
 ```
 
-*Rendered as:*  
+_Rendered as:_  
 Use the `printf()` function.
 
 ### Code Blocks
@@ -183,7 +186,7 @@ def greet(name):
     print(f"Hello, {name}!")
 ```
 
-*Rendered as:*
+_Rendered as:_
 
 ```python
 def greet(name):
@@ -216,7 +219,7 @@ Create links with square brackets and parentheses.
 [Visit GitHub](https://github.com "GitHub Homepage")
 ```
 
-*Rendered as:*  
+_Rendered as:_  
 [Visit GitHub](https://github.com "GitHub Homepage")
 
 ### Reference Links
@@ -243,7 +246,7 @@ Embed images by prefixing the link with an exclamation mark.
 ![Alt text](https://via.placeholder.com/150 "Image Title")
 ```
 
-*Rendered as an image.*
+_Rendered as an image._
 
 ---
 
@@ -255,15 +258,15 @@ You can create tables using pipes and hyphens.
 
 ```markdown
 | Syntax    | Description |
-|-----------|-------------|
+| --------- | ----------- |
 | Header    | Title       |
 | Paragraph | Text        |
 ```
 
-*Rendered as:*
+_Rendered as:_
 
 | Syntax    | Description |
-|-----------|-------------|
+| --------- | ----------- |
 | Header    | Title       |
 | Paragraph | Text        |
 
@@ -279,7 +282,7 @@ If you need to display a character that is part of the Markdown syntax, prefix i
 \# This is not a heading, but literal text.
 ```
 
-*Rendered as:*  
+_Rendered as:_  
 \# This is not a heading, but literal text.
 
 ---
@@ -289,20 +292,22 @@ If you need to display a character that is part of the Markdown syntax, prefix i
 Markdown processors may support extra features such as:
 
 - **Tables:** (see above)
-- **Footnotes:**  
+- **Footnotes:**
+
   ```markdown
   Here is a sentence with a footnote.[^1]
 
   [^1]: This is the footnote text.
   ```
-- **Task Lists:**  
+
+- **Task Lists:**
   ```markdown
   - [x] Completed task
   - [ ] Incomplete task
   ```
 - **Strikethrough:** (shown above)
 
-*Note: Support for extended features may vary depending on your Markdown processor.*
+_Note: Support for extended features may vary depending on your Markdown processor._
 
 ---
 
@@ -314,5 +319,8 @@ Happy writing in Markdown!
 
 ---
 
-*End of Markdown Syntax Guide*
+_End of Markdown Syntax Guide_
+
+```
+
 ```

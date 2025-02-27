@@ -1,37 +1,55 @@
-## Welcome to GitHub Pages
+# Personal Website
 
-You can use the [editor on GitHub](https://github.com/acaradonna/acaradonna.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+Welcome to my personal website repository. This site serves as a professional portfolio and resume, hosted using GitHub Pages.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Overview
 
-### Markdown
+This repository contains the source code for my personal website, where you can find:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- My professional background and experience
+- Resume and qualifications
+- Portfolio of projects
+- Contact information
 
-```markdown
-Syntax highlighted code block
+## Structure
 
-# Header 1
-## Header 2
-### Header 3
+The main components of this site include:
 
-- Bulleted
-- List
+- `resume.md` - My professional resume
+- `_layouts/` - Custom layouts for the site
+- `data/` - Data files including resume information
 
-1. Numbered
-2. List
+## Local Development
 
-**Bold** and _Italic_ and `Code` text
+To run this site locally:
 
-[Link](url) and ![Image](src)
+1. Install Jekyll (requires Ruby):
+
+```bash
+gem install bundler jekyll
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+2. Clone this repository:
 
-### Jekyll Themes
+```bash
+git clone https://github.com/acaradonna/acaradonna.github.io.git
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/acaradonna/acaradonna.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+3. Run the site:
 
-### Support or Contact
+```bash
+bundle exec jekyll serve
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+4. Visit `http://localhost:4000` in your browser
+
+## Technologies Used
+
+- GitHub Pages
+- Jekyll
+- Markdown
+- YAML
+
+## Contact
+
+Feel free to reach out to me through GitHub or find my contact information on the website.

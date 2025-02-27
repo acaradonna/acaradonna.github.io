@@ -1,0 +1,47 @@
+education:
+  - school: Southern Maine Community College
+    degree: Associate's of Applied Science
+    major: Computer Science
+    graduation: 2018
+    languages: Java, JavaScript, HTML/CSS, C++, C#, SQL, Assembly
+    concepts: Object-Oriented Programming, Data Structures, Algorithms, Computer Architecture, Computer Networks, Operating Systems, Computer Security
+
+work:
+  - company: VividCloud, LLC
+    position: Software Engineer III
+    location: Brunswick, ME
+    start_date: 2022-06-01
+    end_date: Present
+    languages: Java, JavaScript, TypeScript, SQL, C#, Python
+    libraries: Angular.js, Node.js, Spring Boot, JUnit, Mockito, Websocket, REST, Maven, Docker, Git, GitLab, PrimeNG, Azure
+    highlights:
+      - Contributed at nearly double the average capacity of the team
+      - Was nominated as Scrum Master in 2023, while still contributing as a developer
+      - Exceeded expectations in my last performance review, received a performance based raise that was above what the company had budgeted 'as a gesture'
+      - Pitched, planned and implemented a full redesign of my team's product
+      - Mentor and company founder have suggested that I be promoted to Senior Software Engineer in 2025
+  - company: IDEXX Laboratories, Inc.
+    position: Application Developer I
+    location: Westbrook, ME
+    start_date: 2020-06-01
+    end_date: 2022-06-01
+    languages: Java, Javascript, TypeScript, AWS, SQL, Angular.js, Node.js, Spring Boot, JUnit, Mockito, REST, Maven, Docker, Git, Jenkins, Jira, Confluence
+    
+skills:
+  - category: technical
+    items:
+      - Python
+      - JavaScript
+      - React
+      - Git
+  - category: soft
+    items:
+      - Team Leadership
+      - Project Management
+      - Communication
+
+certificates:
+  - name: Certification Name
+    issuer: Issuing Organization
+    date: 2024-03-01
+    url: https://verification-url.com
