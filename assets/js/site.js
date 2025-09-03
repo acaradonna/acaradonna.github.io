@@ -74,7 +74,7 @@
       container.innerHTML = '';
       for (const repo of repos) {
         const a = document.createElement('a');
-        a.className = 'card reveal';
+        a.className = 'card reveal in';
         a.href = repo.html_url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
