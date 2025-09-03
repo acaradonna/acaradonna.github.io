@@ -3,8 +3,7 @@ layout: default
 title: Home
 ---
 
-<section class="hero liquid-split">
-  <div class="glow"></div>
+<section class="hero">
   <h1>Hi, I'm Alex.</h1>
   <p class="lead">I build reliable software and systems that ship.</p>
   <div class="button-row">
@@ -18,7 +17,7 @@ title: Home
   <div class="grid" id="featured">
     {% assign pinned = site.data.links.projects | slice: 0, 6 %}
     {% for project in pinned %}
-    <a class="card feral" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
+    <a class="card" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
       <div class="repo-name">{{ project.name }}</div>
       <div class="repo-desc">{{ project.description | default: 'Repository' }}</div>
       <div class="badges">
