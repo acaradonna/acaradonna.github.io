@@ -3,7 +3,7 @@
 Decision: Hybrid — LIQUID SPLIT (as sectional divider) + SACRED FIELD (low-intensity background); FERAL CORNER as optional signature on select blocks.
 
 ## Tokens
-- Color (OKLCH primary ramp): see tokens.ts
+- Color (OKLCH primary ramp): see tokens.ts and :root in assets/css/style.css
 - Space: 4 8 12 16 24 32 48
 - Type scale: clamp(2.2rem, 2vw + 1rem, 3.2rem) for h1; h2 clamp(1.5rem, 1vw + 1rem, 2rem)
 - Motion: --dur-fast 120ms; --dur 200ms; --dur-slow 320ms; easing: cubic-bezier(.2,.7,.2,1)
@@ -20,7 +20,5 @@ Decision: Hybrid — LIQUID SPLIT (as sectional divider) + SACRED FIELD (low-int
 
 ## Pattern Library Outline
 - tokens.ts
-- utilities/_liquid-split.css
-- utilities/_feral-corner.css
-- utilities/_sacred-field.css
+- utilities embedded in assets/css/style.css (scoped classes)
 - demo prototypes under /art-overhaul/prototypes

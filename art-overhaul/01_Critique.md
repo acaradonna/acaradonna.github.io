@@ -47,3 +47,7 @@ Inputs
 8. Soften 3D tilt defaults; maintain clarity.
 9. Create Storybook-style sandbox for effects.
 10. Add a11y/contrast regression checks in QA.
+
+## Before/After Notes
+- Before: inconsistent motion tokens, strong canvas motion competing with hero, no field intensity control.
+- After: tokens centralized, reduced-motion respected globally, Sacred Field intensity toggles, Liquid Split divider reinforces hierarchy, Feral Corner signature on cards.
