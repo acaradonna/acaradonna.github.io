@@ -24,6 +24,9 @@ test('homepage loads and shows featured cards', async ({ page }) => {
   // Wait for client hydration to potentially replace content
   await page.waitForTimeout(500);
   await expectVisibleCards(page);
+  // Art toggle and palette cycler exist
+  await expect(page.locator('#toggle-art')).toBeVisible();
+  await expect(page.locator('#cycle-palette')).toBeVisible();
 });
 
 test('projects page lists projects', async ({ page }) => {

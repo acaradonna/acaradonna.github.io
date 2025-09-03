@@ -49,6 +49,24 @@
     </main>
   </div>
 
+  <!-- SVG Filters and Grain Overlay -->
+  <svg style="position:fixed;width:0;height:0;" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+        <feBlend in="SourceGraphic" in2="goo" />
+      </filter>
+    </defs>
+  </svg>
+  <svg class="grain" aria-hidden="true" focusable="false">
+    <filter id="grainFx">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" seed="2" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grainFx)" opacity="0.025"></rect>
+  </svg>
+
   <script src="/assets/js/site.js?v={{ site.time | date: '%s' }}" defer></script>
   <script src="/assets/js/art.js?v={{ site.time | date: '%s' }}" defer></script>
 </body>

@@ -7,6 +7,14 @@
   let width = 0, height = 0, dpr = Math.max(1, window.devicePixelRatio || 1);
   let running = true;
   let bloom = true;
+  try {
+    const saved = localStorage.getItem('art-prefs');
+    if (saved) {
+      const prefs = JSON.parse(saved);
+      running = prefs.running ?? running;
+      paletteName = prefs.paletteName ?? 'Aurora';
+    }
+  } catch {}
 
   const resize = () => {
     width = window.innerWidth; height = window.innerHeight;
@@ -112,9 +120,11 @@
   // Toggle Art mode
   const toggle = document.getElementById('toggle-art');
   if (toggle) {
+    toggle.querySelector('span').textContent = running ? 'On' : 'Off';
     toggle.addEventListener('click', () => {
       running = !running;
       toggle.querySelector('span').textContent = running ? 'On' : 'Off';
+      try { localStorage.setItem('art-prefs', JSON.stringify({ running, paletteName })); } catch {}
       if (running) {
         lastTime = performance.now();
         requestAnimationFrame(tick);
@@ -131,10 +141,27 @@
       paletteName = names[nextIndex];
       PALETTE = PALETTES[paletteName];
       cycle.querySelector('span').textContent = paletteName;
+      try { localStorage.setItem('art-prefs', JSON.stringify({ running, paletteName })); } catch {}
       // Re-tint particles gradually
       particles.forEach((p, i) => {
         p.color = colorFor(i + Math.floor(Math.random() * 5));
       });
     });
+  }
+
+  // Pause when tab hidden to save battery
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) return; // on visible, allow RAF to schedule
+    if (running) {
+      lastTime = performance.now();
+      requestAnimationFrame(tick);
+    }
+  });
+
+  // Respect reduced motion: soft-stop animation
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (mq.matches) {
+    running = false;
+    try { localStorage.setItem('art-prefs', JSON.stringify({ running, paletteName })); } catch {}
   }
 })();
