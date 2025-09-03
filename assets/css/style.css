@@ -156,7 +156,7 @@ body.high-contrast {
 
 h1, h2, h3 { color: var(--text); letter-spacing: 0.2px; }
 
-h1 { font-size: 36px; margin: 0 0 8px; }
+h1 { font-size: clamp(32px, 2vw + 16px, 52px); margin: 0 0 8px; }
 .hero h1 {
   background: linear-gradient(90deg, #9ece6a, #7aa2f7, #ff9e64);
   -webkit-background-clip: text; background-clip: text; color: transparent;
