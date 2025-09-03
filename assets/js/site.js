@@ -10,6 +10,14 @@
   }, { threshold: 0.08 });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  // If cards were dynamically created with reveal class before observer, mark them in.
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => {
+      if (!el.classList.contains('in')) {
+        el.classList.add('in');
+      }
+    });
+  }, 0);
 })();
 
 // Smooth scroll for internal anchors

@@ -5,6 +5,7 @@ theme: jekyll-theme-cayman
 plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
+data_dir: data
 exclude:
   - node_modules
   - package-lock.json

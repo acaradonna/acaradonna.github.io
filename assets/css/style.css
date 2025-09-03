@@ -134,6 +134,7 @@ h1 { font-size: 36px; margin: 0 0 8px; }
 
 .card {
   position: relative;
+  display: block;
   border-radius: 14px;
   padding: 18px;
   background: linear-gradient(180deg, rgba(20,28,60,0.8), rgba(16,22,48,0.7));
@@ -141,6 +142,8 @@ h1 { font-size: 36px; margin: 0 0 8px; }
   --tx: 0px; --ty: 0px;
   transform: translate(var(--tx), var(--ty));
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  color: var(--text);
+  text-decoration: none;
 }
 
 .card:hover {
@@ -193,6 +196,7 @@ h1 { font-size: 36px; margin: 0 0 8px; }
 
 .reveal { opacity: 0; transform: translateY(10px); }
 .reveal.in { opacity: 1; transform: none; transition: all 560ms cubic-bezier(.2,.7,.2,1); }
+html:not(.js) .reveal { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
