@@ -29,6 +29,11 @@
 // Magnetic hover effect for cards
 (function() {
   const strength = 18;
+  const root = document.documentElement;
+  const set = (card, tx, ty) => {
+    card.style.setProperty('--tx', `${tx}px`);
+    card.style.setProperty('--ty', `${ty}px`);
+  };
   document.addEventListener('mousemove', (e) => {
     document.querySelectorAll('.card').forEach(card => {
       const rect = card.getBoundingClientRect();
@@ -38,13 +43,11 @@
       const dy = (e.clientY - midY) / rect.height;
       const tx = strength * dx;
       const ty = strength * dy;
-      card.style.transform = `translate(${tx}px, ${ty}px)`;
+      set(card, tx, ty);
     });
   });
   document.addEventListener('mouseleave', () => {
-    document.querySelectorAll('.card').forEach(card => {
-      card.style.transform = '';
-    });
+    document.querySelectorAll('.card').forEach(card => set(card, 0, 0));
   }, true);
 })();
 
