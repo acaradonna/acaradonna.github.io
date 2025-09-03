@@ -27,6 +27,15 @@ body {
   overflow-x: hidden;
 }
 
+/* Focus mode & high contrast applied via body classes */
+body.focus-mode #art-canvas { opacity: 0; }
+body.focus-mode .grain { opacity: 0; }
+body.high-contrast {
+  --text: #ffffff;
+  --muted: #d7dbe6;
+  --outline: rgba(255,255,255,0.18);
+}
+
 .grain {
   position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0;
   pointer-events: none; mix-blend-mode: overlay; opacity: 0.25;
@@ -62,8 +71,7 @@ body {
   height: 100vh;
   padding: 28px 22px;
   border-right: 1px solid var(--outline);
-  background: linear-gradient(180deg, rgba(15,21,48,0.9), rgba(11,16,32,0.7));
-  backdrop-filter: blur(10px);
+  background: #0e1530; /* more opaque */
 }
 
 .brand {
@@ -115,7 +123,7 @@ body {
 }
 
 .container {
-  background: linear-gradient(180deg, rgba(17,24,49,0.7), rgba(15,21,48,0.55));
+  background: #121a39; /* solid background for legibility */
   border: 1px solid var(--outline);
   border-radius: 16px;
   padding: 28px;
@@ -161,7 +169,7 @@ h1 { font-size: 36px; margin: 0 0 8px; }
   display: block;
   border-radius: 14px;
   padding: 18px;
-  background: linear-gradient(180deg, rgba(20,28,60,0.8), rgba(16,22,48,0.7));
+  background: #141c3c; /* more opaque */
   border: 1px solid var(--outline);
   --tx: 0px; --ty: 0px; --rx: 0deg; --ry: 0deg; --mx: 50%;
   transform: perspective(800px) translate(var(--tx), var(--ty)) rotateX(var(--rx)) rotateY(var(--ry));
@@ -189,7 +197,7 @@ h1 { font-size: 36px; margin: 0 0 8px; }
 }
 
 .card .repo-desc {
-  color: var(--muted);
+  color: #c8cfdd; /* higher contrast */
   min-height: 44px;
   margin: 6px 0 10px;
 }

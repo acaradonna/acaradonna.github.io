@@ -71,6 +71,49 @@
   }, true);
 })();
 
+// UX toggles: Focus mode and High contrast (persisted)
+(function() {
+  const body = document.body;
+  const focusBtn = document.getElementById('toggle-focus');
+  const contrastBtn = document.getElementById('toggle-contrast');
+  const artBtn = document.getElementById('toggle-art');
+  const sync = () => {
+    try {
+      localStorage.setItem('ux-prefs', JSON.stringify({
+        focus: body.classList.contains('focus-mode'),
+        contrast: body.classList.contains('high-contrast')
+      }));
+    } catch {}
+  };
+  try {
+    const saved = localStorage.getItem('ux-prefs');
+    if (saved) {
+      const prefs = JSON.parse(saved);
+      if (prefs.focus) body.classList.add('focus-mode');
+      if (prefs.contrast) body.classList.add('high-contrast');
+    }
+  } catch {}
+
+  if (focusBtn) {
+    focusBtn.addEventListener('click', () => {
+      const on = body.classList.toggle('focus-mode');
+      focusBtn.setAttribute('aria-pressed', String(on));
+      focusBtn.querySelector('span').textContent = on ? 'On' : 'Off';
+      // Pause art when in focus mode by invoking art toggle if needed
+      if (on && artBtn && /On/.test(artBtn.textContent)) artBtn.click();
+      sync();
+    });
+  }
+  if (contrastBtn) {
+    contrastBtn.addEventListener('click', () => {
+      const on = body.classList.toggle('high-contrast');
+      contrastBtn.setAttribute('aria-pressed', String(on));
+      contrastBtn.querySelector('span').textContent = on ? 'On' : 'Off';
+      sync();
+    });
+  }
+})();
+
 // Progressive enhancement: hydrate Featured with live GitHub data (if allowed by CORS)
 (function() {
   const container = document.getElementById('featured');
