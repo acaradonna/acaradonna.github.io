@@ -1,1 +1,11 @@
+title: Alex Caradonna
+description: Portfolio and projects of Alex Caradonna
+url: https://acaradonna.github.io
 theme: jekyll-theme-cayman
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+exclude:
+  - node_modules
+  - package-lock.json
+  - package.json
