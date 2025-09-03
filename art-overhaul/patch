@@ -1,0 +1,1088 @@
+diff --git a/_layouts/default.html b/_layouts/default.html
+index 6483f96..2e09747 100644
+--- a/_layouts/default.html
++++ b/_layouts/default.html
+@@ -18,7 +18,7 @@
+   <meta name="theme-color" content="#0b1020" />
+   <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+ </head>
+-<body>
++<body class="sacred-field chill">
+   <canvas id="art-canvas" aria-hidden="true"></canvas>
+   <div class="site">
+     <aside class="sidebar">
+@@ -36,6 +36,7 @@
+         <a href="/resume">Resume</a>
+         <button id="toggle-art" class="toggle">Art mode: <span>On</span></button>
+         <button id="cycle-palette" class="toggle" aria-label="Cycle color palette">Palette: <span>Aurora</span></button>
++        <button id="toggle-field" class="toggle" aria-label="Cycle sacred field intensity">Field: <span>Chill</span></button>
+         <button id="toggle-focus" class="toggle" aria-pressed="false">Focus mode: <span>Off</span></button>
+         <button id="toggle-contrast" class="toggle" aria-pressed="false">High contrast: <span>Off</span></button>
+       </nav>
+@@ -59,6 +60,11 @@
+         <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+         <feBlend in="SourceGraphic" in2="goo" />
+       </filter>
++      <!-- Liquid Split filter for upward drip divider -->
++      <filter id="liquidSplit" x="-20%" y="-20%" width="140%" height="140%">
++        <feTurbulence baseFrequency="0.004" numOctaves="2" seed="3" result="turb" />
++        <feDisplacementMap in2="turb" in="SourceGraphic" scale="20" />
++      </filter>
+     </defs>
+   </svg>
+   <svg class="grain" aria-hidden="true" focusable="false">
+diff --git a/art-overhaul/01_Critique.md b/art-overhaul/01_Critique.md
+new file mode 100644
+index 0000000..02ca918
+--- /dev/null
++++ b/art-overhaul/01_Critique.md
+@@ -0,0 +1,53 @@
++# 01_Critique
++
++Inputs
++- SITE_URL: https://acaradonna.github.io
++- CODEBASE: Jekyll + HTML/CSS/JS (no build)
++- BRAND INTENT (inferred): confident, technical, imaginative, elegant; audience: engineers/recruiters/collaborators
++- CONSTRAINTS: GitHub Pages, no heavy deps, a11y/perf first
++
++## Composition & Hierarchy
++- Hero lacks a clear focal field; background motion competes with content.
++- Sidebar is strong but content container translucency reduces figure/ground separation.
++- Grid rhythm on cards is good; hover effects slightly over-active for reading contexts.
++
++## Color
++- Prior version overused hues; recent duotone is an improvement but needs tighter contrast control across sections.
++- Accents occasionally fight with background intensity.
++
++## Type
++- Inter is solid but heading doesn’t achieve a distinctive typographic moment.
++- Vertical rhythm is acceptable; could benefit from stronger scale in hero.
++
++## Motion
++- Prior particle background was noisy; new duotone is calmer but needs clearer temporal phrasing and rest.
++- Hover tilt/shine is tasteful but can be softened in reduced-motion.
++
++## Texture & Iconography
++- Grain was too strong; reduced now. Iconography minimal (OK).
++
++## Depth
++- Shadows/glow consistent. Transparency previously muddied layers; now more opaque (good).
++
++## Issues (Severity)
++- High: Background can still pull eye at times on long dwell.
++- High: Contrast ramps not guaranteed WCAG across all states.
++- Med: Motion tokens not centralized; durations vary.
++- Med: Hero type doesn’t carry enough brand voice.
++- Low: No consistent pattern library for decorative effects.
++
++## Fix-first (Top 10)
++1. Centralize motion and color tokens; enforce WCAG pairs.
++2. Add reduced-motion variants to all custom effects (done for many; finalize).
++3. Introduce signature background with strict intensity control (Chill/Playful/Trippy).
++4. Implement Liquid Split divider for sectional hierarchy.
++5. Add Feral Corner utility for a subtle, ownable quirk.
++6. Introduce Sacred Field pattern at low opacity for depth (static on reduced motion).
++7. Strengthen hero typographic moment; fluid scale.
++8. Soften 3D tilt defaults; maintain clarity.
++9. Create Storybook-style sandbox for effects.
++10. Add a11y/contrast regression checks in QA.
++
++## Before/After Notes
++- Before: inconsistent motion tokens, strong canvas motion competing with hero, no field intensity control.
++- After: tokens centralized, reduced-motion respected globally, Sacred Field intensity toggles, Liquid Split divider reinforces hierarchy, Feral Corner signature on cards.
+diff --git a/art-overhaul/02_Concepts.md b/art-overhaul/02_Concepts.md
+new file mode 100644
+index 0000000..6f10299
+--- /dev/null
++++ b/art-overhaul/02_Concepts.md
+@@ -0,0 +1,74 @@
++# 02_Concepts
++
++## A) LIQUID SPLIT — Duotone Upward Drip
++- Thesis: Minimal, editorial page split with a living, upward boundary that subtly mixes.
++- References: Turrell color fields, Issey Miyake fabric motion, Stripe gradients.
++- Palette (OKLCH):
++  - c1: oklch(0.35 0.06 260) navy
++  - c2: oklch(0.72 0.14 240) electric blue
++- Type: Inter variable; hero uses larger weight axis; fluid scale via clamp.
++- Motion: feTurbulence + feDisplacementMap animate scale/seed slowly upward.
++- Texture: Very low grain overlay.
++- Icon style: Line-simple, no fill.
++- Key frames: hero split at 40vh; sections sit on clear ground.
++- A11y: static split when reduced-motion; ensure text never crosses low-contrast edge.
++- Squint Narrative: Eye hits hero headline; boundary adds intrigue; cards read cleanly.
++- Prototype:
++```html
++<svg width="0" height="0">
++  <filter id="liquidSplit" x="-20%" y="-20%" width="140%" height="140%">
++    <feTurbulence baseFrequency="0.004" numOctaves="2" seed="3" result="turb" />
++    <feDisplacementMap in2="turb" in="SourceGraphic" scale="20" />
++  </filter>
++</svg>
++<style>
++.split{position:relative;}
++.split::before{content:"";position:absolute;inset:auto 0 0 0;height:40vh;background:linear-gradient(180deg,var(--c1),var(--c2));filter:url(#liquidSplit)}
++@media (prefers-reduced-motion:reduce){.split::before{filter:none}}
++</style>
++```
++
++## B) FERAL CORNER — Morphing Signature
++- Thesis: Clean cards/containers with a single rebellious corner that morphs.
++- References: Bauhaus cut corners, Elias Stein.
++- Palette: neutrals + single accent.
++- Type: Inter variable; slight tracking for headings.
++- Motion: mask-image with conic/radial gradients; micro wobble on hover.
++- Texture: None.
++- Icon style: Geometric, consistent stroke.
++- Frames: apply class `.feral` to container.
++- A11y: freezes under reduced motion.
++- Prototype:
++```css
++.feral{--corner:18px;--wob:6px;mask:
++ radial-gradient(120% 120% at 100% 0,transparent 0 calc(var(--corner)+var(--wob)),#000 calc(var(--corner)+var(--wob)+2px))}
++.feral:hover{--wob:10px}
++@media (prefers-reduced-motion:reduce){.feral:hover{--wob:0}}
++```
++
++## C) SACRED FIELD — Meditative Geometry
++- Thesis: Soft Flower-of-Life tiling beneath content, barely breathing.
++- References: Sacred geometry tilings, Albers.
++- Palette: duotone substrate; accent pops.
++- Type: Inter variable with optical sizing.
++- Motion: extremely slow rotate/phase; static when reduced.
++- Texture: SVG pattern at 4–8% opacity with mix-blend.
++- Icon style: minimal.
++- Frames: background layer with intensity classes.
++- A11y: ensure low alpha and pause when reduced.
++- Prototype:
++```html
++<svg width="0" height="0">
++  <defs>
++    <pattern id="flower" width="60" height="52" patternUnits="userSpaceOnUse">
++      <circle cx="30" cy="26" r="25" fill="none" stroke="currentColor" opacity="0.08"/>
++    </pattern>
++  </defs>
++</svg>
++<style>
++.sacred{background:radial-gradient(100% 100% at 50% 0,transparent,rgba(255,255,255,0.02)),
++        var(--field-color);}
++.sacred::before{content:"";position:fixed;inset:0;background:var(--field-pattern) center/60px 52px;opacity:.06;mix-blend-mode:soft-light;}
++@media (prefers-reduced-motion:reduce){.sacred::before{opacity:.04}}
++</style>
++```
+diff --git a/art-overhaul/03_Spec.md b/art-overhaul/03_Spec.md
+new file mode 100644
+index 0000000..bd29fee
+--- /dev/null
++++ b/art-overhaul/03_Spec.md
+@@ -0,0 +1,24 @@
++# 03_Spec
++
++Decision: Hybrid — LIQUID SPLIT (as sectional divider) + SACRED FIELD (low-intensity background); FERAL CORNER as optional signature on select blocks.
++
++## Tokens
++- Color (OKLCH primary ramp): see tokens.ts and :root in assets/css/style.css
++- Space: 4 8 12 16 24 32 48
++- Type scale: clamp(2.2rem, 2vw + 1rem, 3.2rem) for h1; h2 clamp(1.5rem, 1vw + 1rem, 2rem)
++- Motion: --dur-fast 120ms; --dur 200ms; --dur-slow 320ms; easing: cubic-bezier(.2,.7,.2,1)
++
++## Components
++- LiquidSplit: pseudo-element divider with SVG filter; reduced-motion removes filter.
++- SacredField: pattern layer with intensity: .chill .playful .trippy (opacity/scale deltas).
++- FeralCorner: utility class with CSS mask vars.
++- Cards/Buttons: maintain 3D tilt but lower angle; high-contrast body copy.
++
++## Accessibility
++- All text on splits sits on solid surfaces; contrast ≥ 4.5:1 body, 3:1 large.
++- Reduced-motion removes all animation and leaves meaningful static visuals.
++
++## Pattern Library Outline
++- tokens.ts
++- utilities embedded in assets/css/style.css (scoped classes)
++- demo prototypes under /art-overhaul/prototypes
+diff --git a/art-overhaul/04_QA.md b/art-overhaul/04_QA.md
+new file mode 100644
+index 0000000..154d256
+--- /dev/null
++++ b/art-overhaul/04_QA.md
+@@ -0,0 +1,20 @@
++# 04_QA
++
++Checklist
++- Contrast: scan hero/body/cards with WCAG AA. Large text ≥ 3:1, body ≥ 4.5:1.
++- Reduced motion: OS pref set; verify static split, no field animation; focus/contrast toggles work.
++- Motion timings: test at 0.75×/1×/1.25×; verify comfort.
++- Perf: CPU throttled 4×, continuous 60fps on canvas; no layout jank; paint mostly GPU.
++- Browsers: Chrome, Firefox, Safari latest; verify fallbacks if WebGL disabled (background gracefully degrades to solid).
++
++Before/After
++- See live site; capture GIFs of hero, cards hover, and reduced-motion variant.
++
++Regression checks
++- Sacred Field opacity classes: Chill/Playful/Trippy cycle via sidebar.
++- Liquid Split filter absent under reduced-motion.
++- Feral Corner wobble reduces to 0 under reduced-motion.
++
++Bugs to watch
++- WebGL context loss on tab restore (reinitialize render loop if needed).
++- Mask/filter support on older Safari (ensure static fallback).
+diff --git a/art-overhaul/prototypes/feral-corner.css b/art-overhaul/prototypes/feral-corner.css
+new file mode 100644
+index 0000000..aeb4bbb
+--- /dev/null
++++ b/art-overhaul/prototypes/feral-corner.css
+@@ -0,0 +1,4 @@
++.feral{--corner:18px;--wob:6px;mask:
++ radial-gradient(120% 120% at 100% 0,transparent 0 calc(var(--corner)+var(--wob)),#000 calc(var(--corner)+var(--wob)+2px))}
++.feral:hover{--wob:10px}
++@media (prefers-reduced-motion:reduce){.feral:hover{--wob:0}}
+diff --git a/art-overhaul/prototypes/liquid-split.svg b/art-overhaul/prototypes/liquid-split.svg
+new file mode 100644
+index 0000000..603a006
+--- /dev/null
++++ b/art-overhaul/prototypes/liquid-split.svg
+@@ -0,0 +1,13 @@
++<svg xmlns='http://www.w3.org/2000/svg' width='800' height='200'>
++  <defs>
++    <filter id='liquidSplit'>
++      <feTurbulence baseFrequency='0.004' numOctaves='2' seed='3' result='turb'/>
++      <feDisplacementMap in2='turb' in='SourceGraphic' scale='20'/>
++    </filter>
++    <linearGradient id='split' x1='0' x2='0' y1='0' y2='1'>
++      <stop offset='0%' stop-color='#0d173a'/>
++      <stop offset='100%' stop-color='#5588f7'/>
++    </linearGradient>
++  </defs>
++  <rect x='0' y='100' width='800' height='100' fill='url(#split)' filter='url(#liquidSplit)'/>
++</svg>
+diff --git a/art-overhaul/prototypes/sacred-field.svg b/art-overhaul/prototypes/sacred-field.svg
+new file mode 100644
+index 0000000..03f6795
+--- /dev/null
++++ b/art-overhaul/prototypes/sacred-field.svg
+@@ -0,0 +1,10 @@
++<svg xmlns='http://www.w3.org/2000/svg' width='120' height='104' viewBox='0 0 120 104'>
++  <defs>
++    <pattern id='flower' width='60' height='52' patternUnits='userSpaceOnUse'>
++      <circle cx='30' cy='26' r='25' fill='none' stroke='currentColor' opacity='0.08'/>
++      <circle cx='30' cy='26' r='25' fill='none' stroke='currentColor' opacity='0.08' transform='translate(30,26)'/>
++      <circle cx='30' cy='26' r='25' fill='none' stroke='currentColor' opacity='0.08' transform='translate(-30,26)'/>
++    </pattern>
++  </defs>
++  <rect width='100%' height='100%' fill='url(#flower)' />
++</svg>
+diff --git a/art-overhaul/tokens.ts b/art-overhaul/tokens.ts
+new file mode 100644
+index 0000000..4020fd0
+--- /dev/null
++++ b/art-overhaul/tokens.ts
+@@ -0,0 +1,27 @@
++export const tokens = {
++  color: {
++    primary: {
++      50: 'oklch(0.97 0.02 240)',
++      100: 'oklch(0.92 0.03 240)',
++      200: 'oklch(0.85 0.05 240)',
++      300: 'oklch(0.78 0.07 240)',
++      400: 'oklch(0.72 0.14 240)',
++      500: 'oklch(0.62 0.15 240)',
++      600: 'oklch(0.52 0.12 240)',
++      700: 'oklch(0.42 0.10 240)',
++      800: 'oklch(0.35 0.06 240)',
++      900: 'oklch(0.28 0.05 240)'
++    }
++  },
++  space: [4, 8, 12, 16, 24, 32, 48],
++  motion: {
++    fast: '120ms',
++    base: '200ms',
++    slow: '320ms',
++    easing: 'cubic-bezier(.2,.7,.2,1)'
++  },
++  type: {
++    h1: 'clamp(2.2rem, 2vw + 1rem, 3.2rem)',
++    h2: 'clamp(1.5rem, 1vw + 1rem, 2rem)'
++  }
++};
+diff --git a/assets/css/style.css b/assets/css/style.css
+index 84a3973..20a9ccf 100644
+--- a/assets/css/style.css
++++ b/assets/css/style.css
+@@ -1,21 +1,63 @@
+ @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+ 
++/* Design Tokens */
++:root {
++  /* Prefer OKLCH; provide fallbacks via @supports below */
++  --bg: oklch(0.17 0.03 260);
++  --bg-elev: oklch(0.20 0.04 260);
++  --text: oklch(0.93 0.02 260);
++  --muted: oklch(0.78 0.03 260);
++  --primary: oklch(0.72 0.14 240);
++  --accent: oklch(0.72 0.13 140);
++  --warn: oklch(0.75 0.16 60);
++  --card: oklch(0.21 0.04 260);
++  --outline: color-mix(in oklch, white 6%, transparent);
++  --glow: 0 8px 40px color-mix(in oklch, oklch(0.72 0.14 240) 25%, transparent);
++  --dur-fast: 120ms;
++  --dur: 200ms;
++  --dur-slow: 320ms;
++  --ease: cubic-bezier(.2, .7, .2, 1);
++  --field-opacity: 0.06;
++  --field-scale: 1;
++}
++
++@supports not (color: oklch(50% 0.1 200)) {
++  :root {
++    --bg: #0b1020;
++    --bg-elev: #0f1530;
++    --text: #e7e9ee;
++    --muted: #a8b0c0;
++    --primary: #7aa2f7;
++    --accent: #9ece6a;
++    --warn: #ff9e64;
++    --card: #111831;
++    --outline: rgba(255, 255, 255, 0.06);
++    --glow: 0 8px 40px rgba(122, 162, 247, 0.25);
++  }
++}
++
+ :root {
+   --bg: #0b1020;
+   --bg-elev: #0f1530;
+   --text: #e7e9ee;
+   --muted: #a8b0c0;
+-  --primary: #7aa2f7; /* blue */
+-  --accent: #9ece6a; /* green */
+-  --warn: #ff9e64;   /* orange */
++  --primary: #7aa2f7;
++  /* blue */
++  --accent: #9ece6a;
++  /* green */
++  --warn: #ff9e64;
++  /* orange */
+   --card: #111831;
+-  --outline: rgba(255,255,255,0.06);
+-  --glow: 0 8px 40px rgba(122,162,247,0.25);
++  --outline: rgba(255, 255, 255, 0.06);
++  --glow: 0 8px 40px rgba(122, 162, 247, 0.25);
+ }
+ 
+-* { box-sizing: border-box; }
++* {
++  box-sizing: border-box;
++}
+ 
+-html, body {
++html,
++body {
+   height: 100%;
+ }
+ 
+@@ -28,17 +70,29 @@ body {
+ }
+ 
+ /* Focus mode & high contrast applied via body classes */
+-body.focus-mode #art-canvas { opacity: 0; }
+-body.focus-mode .grain { opacity: 0; }
++body.focus-mode #art-canvas {
++  opacity: 0;
++}
++
++body.focus-mode .grain {
++  opacity: 0;
++}
++
+ body.high-contrast {
+   --text: #ffffff;
+   --muted: #d7dbe6;
+-  --outline: rgba(255,255,255,0.18);
++  --outline: rgba(255, 255, 255, 0.18);
+ }
+ 
+ .grain {
+-  position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0;
+-  pointer-events: none; mix-blend-mode: overlay; opacity: 0.08;
++  position: fixed;
++  inset: 0;
++  width: 100%;
++  height: 100%;
++  z-index: 0;
++  pointer-events: none;
++  mix-blend-mode: overlay;
++  opacity: 0.08;
+ }
+ 
+ .site {
+@@ -49,20 +103,25 @@ body.high-contrast {
+   position: relative;
+   z-index: 1;
+ }
++
+ .toggle {
+   margin-top: 8px;
+   padding: 8px 10px;
+   border-radius: 10px;
+   border: 1px solid var(--outline);
+-  background: rgba(122,162,247,0.1);
++  background: rgba(122, 162, 247, 0.1);
+   color: var(--text);
+   cursor: pointer;
+ }
+ 
+ #art-canvas {
+-  position: fixed; inset: 0; width: 100%; height: 100%;
+-  z-index: 0; pointer-events: none;
+-  transition: opacity 260ms ease;
++  position: fixed;
++  inset: 0;
++  width: 100%;
++  height: 100%;
++  z-index: 0;
++  pointer-events: none;
++  transition: opacity var(--dur) var(--ease);
+ }
+ 
+ .sidebar {
+@@ -71,7 +130,8 @@ body.high-contrast {
+   height: 100vh;
+   padding: 28px 22px;
+   border-right: 1px solid var(--outline);
+-  background: #0e1530; /* more opaque */
++  background: #0e1530;
++  /* more opaque */
+ }
+ 
+ .brand {
+@@ -81,7 +141,8 @@ body.high-contrast {
+ }
+ 
+ .brand .avatar {
+-  width: 48px; height: 48px;
++  width: 48px;
++  height: 48px;
+   border-radius: 12px;
+   border: 1px solid var(--outline);
+   box-shadow: var(--glow);
+@@ -93,8 +154,15 @@ body.high-contrast {
+   line-height: 1.1;
+ }
+ 
+-.brand .name { font-weight: 800; letter-spacing: 0.3px; }
+-.brand .tag  { color: var(--muted); font-size: 13px; }
++.brand .name {
++  font-weight: 800;
++  letter-spacing: 0.3px;
++}
++
++.brand .tag {
++  color: var(--muted);
++  font-size: 13px;
++}
+ 
+ .nav {
+   margin-top: 28px;
+@@ -109,12 +177,12 @@ body.high-contrast {
+   color: var(--text);
+   text-decoration: none;
+   border: 1px solid transparent;
+-  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
++  transition: transform var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+ }
+ 
+ .nav a:hover {
+   transform: translateX(4px);
+-  background: rgba(122,162,247,0.10);
++  background: rgba(122, 162, 247, 0.10);
+   border-color: var(--outline);
+ }
+ 
+@@ -123,23 +191,44 @@ body.high-contrast {
+ }
+ 
+ .container {
+-  background: #121a39; /* solid background for legibility */
++  background: #121a39;
++  /* solid background for legibility */
+   border: 1px solid var(--outline);
+   border-radius: 16px;
+   padding: 28px;
+   box-shadow: var(--glow);
+ }
+ 
+-h1, h2, h3 { color: var(--text); letter-spacing: 0.2px; }
++h1,
++h2,
++h3 {
++  color: var(--text);
++  letter-spacing: 0.2px;
++}
++
++h1 {
++  font-size: clamp(32px, 2vw + 16px, 52px);
++  margin: 0 0 8px;
++}
+ 
+-h1 { font-size: 36px; margin: 0 0 8px; }
+ .hero h1 {
+   background: linear-gradient(90deg, #9ece6a, #7aa2f7, #ff9e64);
+-  -webkit-background-clip: text; background-clip: text; color: transparent;
++  -webkit-background-clip: text;
++  background-clip: text;
++  color: transparent;
++}
++
++.lead {
++  color: var(--muted);
++  margin: 0 0 22px;
++}
++
++.button-row {
++  display: flex;
++  gap: 10px;
++  flex-wrap: wrap;
+ }
+-.lead { color: var(--muted); margin: 0 0 22px; }
+ 
+-.button-row { display: flex; gap: 10px; flex-wrap: wrap; }
+ .button {
+   padding: 10px 14px;
+   border-radius: 10px;
+@@ -147,15 +236,19 @@ h1 { font-size: 36px; margin: 0 0 8px; }
+   color: #061026;
+   font-weight: 700;
+   text-decoration: none;
+-  border: 1px solid rgba(255,255,255,0.1);
+-  box-shadow: 0 6px 24px rgba(122,162,247,0.35);
++  border: 1px solid rgba(255, 255, 255, 0.1);
++  box-shadow: 0 6px 24px rgba(122, 162, 247, 0.35);
+ }
++
+ .button.secondary {
+   background: transparent;
+   color: var(--text);
+   border-color: var(--outline);
+ }
+-.button:hover { filter: brightness(1.05); }
++
++.button:hover {
++  filter: brightness(1.05);
++}
+ 
+ .grid {
+   margin-top: 22px;
+@@ -169,47 +262,69 @@ h1 { font-size: 36px; margin: 0 0 8px; }
+   display: block;
+   border-radius: 14px;
+   padding: 18px;
+-  background: #141c3c; /* more opaque */
++  background: #141c3c;
++  /* more opaque */
+   border: 1px solid var(--outline);
+-  --tx: 0px; --ty: 0px; --rx: 0deg; --ry: 0deg; --mx: 50%;
++  --tx: 0px;
++  --ty: 0px;
++  --rx: 0deg;
++  --ry: 0deg;
++  --mx: 50%;
+   transform: perspective(800px) translate(var(--tx), var(--ty)) rotateX(var(--rx)) rotateY(var(--ry));
+-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
++  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+   color: var(--text);
+   text-decoration: none;
+ }
+ 
+ .card:hover {
+-  box-shadow: 0 14px 50px rgba(122,162,247,0.25);
+-  border-color: rgba(122,162,247,0.35);
++  box-shadow: 0 14px 50px rgba(122, 162, 247, 0.25);
++  border-color: rgba(122, 162, 247, 0.35);
+ }
+ 
+ .card::before {
+   content: "";
+-  position: absolute; inset: 0; border-radius: inherit;
+-  background: radial-gradient(220px 90px at var(--mx) -20%, rgba(255,255,255,0.16), transparent 60%);
+-  opacity: 0; pointer-events: none;
+-  transition: opacity 180ms ease;
++  position: absolute;
++  inset: 0;
++  border-radius: inherit;
++  background: radial-gradient(220px 90px at var(--mx) -20%, rgba(255, 255, 255, 0.16), transparent 60%);
++  opacity: 0;
++  pointer-events: none;
++  transition: opacity var(--dur) var(--ease);
++}
++
++.card:hover::before {
++  opacity: 1;
+ }
+-.card:hover::before { opacity: 1; }
+ 
+ .card .repo-name {
+   font-weight: 700;
+ }
+ 
+ .card .repo-desc {
+-  color: #c8cfdd; /* higher contrast */
++  color: #c8cfdd;
++  /* higher contrast */
+   min-height: 44px;
+   margin: 6px 0 10px;
+ }
+ 
+-.badges { display: flex; gap: 8px; flex-wrap: wrap; }
++.badges {
++  display: flex;
++  gap: 8px;
++  flex-wrap: wrap;
++}
++
+ .badge {
+-  font-size: 12px; color: #0c1330;
++  font-size: 12px;
++  color: #0c1330;
+   background: var(--accent);
+   border-radius: 999px;
+   padding: 4px 10px;
+ }
+-.badge.muted { background: rgba(255,255,255,0.16); color: var(--text); }
++
++.badge.muted {
++  background: rgba(255, 255, 255, 0.16);
++  color: var(--text);
++}
+ 
+ .footer {
+   margin-top: 18px;
+@@ -223,32 +338,145 @@ h1 { font-size: 36px; margin: 0 0 8px; }
+ }
+ 
+ .hero .glow {
+-  position: absolute; inset: -40%;
+-  background: radial-gradient(closest-side, rgba(122,162,247,0.22), transparent 60%);
++  position: absolute;
++  inset: -40%;
++  background: radial-gradient(closest-side, rgba(122, 162, 247, 0.22), transparent 60%);
+   filter: blur(40px);
+   animation: float 9s ease-in-out infinite;
+ }
+ 
+ @keyframes float {
+-  0% { transform: translate3d(0,0,0) scale(1); }
+-  50% { transform: translate3d(6%, -4%, 0) scale(1.05); }
+-  100% { transform: translate3d(0,0,0) scale(1); }
++  0% {
++    transform: translate3d(0, 0, 0) scale(1);
++  }
++
++  50% {
++    transform: translate3d(6%, -4%, 0) scale(1.05);
++  }
++
++  100% {
++    transform: translate3d(0, 0, 0) scale(1);
++  }
++}
++
++.reveal {
++  opacity: 0;
++  transform: translateY(10px);
+ }
+ 
+-.reveal { opacity: 0; transform: translateY(10px); }
+-.reveal.in { opacity: 1; transform: none; transition: all 560ms cubic-bezier(.2,.7,.2,1); }
+-html:not(.js) .reveal { opacity: 1; transform: none; }
++.reveal.in {
++  opacity: 1;
++  transform: none;
++  transition: all 560ms var(--ease);
++}
++
++html:not(.js) .reveal {
++  opacity: 1;
++  transform: none;
++}
++
++/* Sacred Field overlay */
++.sacred-field::before {
++  content: "";
++  position: fixed;
++  inset: 0;
++  z-index: 0;
++  pointer-events: none;
++  background-image: url('/art-overhaul/prototypes/sacred-field.svg');
++  background-repeat: repeat;
++  background-size: 60px 52px;
++  opacity: var(--field-opacity);
++  mix-blend-mode: soft-light;
++  transform: scale(var(--field-scale));
++  transform-origin: center;
++}
++
++.sacred-field.chill {
++  --field-opacity: 0.04;
++  --field-scale: 1;
++}
++
++.sacred-field.playful {
++  --field-opacity: 0.06;
++  --field-scale: 1.05;
++}
++
++.sacred-field.trippy {
++  --field-opacity: 0.08;
++  --field-scale: 1.10;
++}
++
++/* Liquid Split divider */
++.liquid-split {
++  position: relative;
++}
++
++.liquid-split::after {
++  content: "";
++  position: absolute;
++  left: 0;
++  right: 0;
++  bottom: 0;
++  height: 38vh;
++  z-index: 0;
++  background: linear-gradient(180deg, oklch(0.21 0.04 260), oklch(0.42 0.10 240));
++  filter: url(#liquidSplit);
++}
++
++@supports not (color: oklch(50% 0.1 200)) {
++  .liquid-split::after {
++    background: linear-gradient(180deg, #121a39, #335fff);
++  }
++}
++
++/* Feral Corner utility */
++.feral {
++  --corner-size: 18px;
++  --corner-wobble: 6px;
++}
++
++.feral {
++  -webkit-mask-image: radial-gradient(120% 120% at 100% 0, transparent 0 calc(var(--corner-size) + var(--corner-wobble)), #000 calc(var(--corner-size) + var(--corner-wobble) + 2px));
++  mask-image: radial-gradient(120% 120% at 100% 0, transparent 0 calc(var(--corner-size) + var(--corner-wobble)), #000 calc(var(--corner-size) + var(--corner-wobble) + 2px));
++}
++
++.feral:hover {
++  --corner-wobble: 10px;
++}
+ 
+ @media (prefers-reduced-motion: reduce) {
+-  * { animation: none !important; transition: none !important; }
+-  .reveal { opacity: 1; transform: none; }
++  * {
++    animation: none !important;
++    transition: none !important;
++  }
++
++  .reveal {
++    opacity: 1;
++    transform: none;
++  }
++
++  .liquid-split::after {
++    filter: none;
++  }
+ }
+ 
+ @media (max-width: 980px) {
+-  .site { grid-template-columns: 1fr; }
++  .site {
++    grid-template-columns: 1fr;
++  }
++
+   .sidebar {
+-    position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--outline);
+-    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px;
++    position: static;
++    height: auto;
++    border-right: 0;
++    border-bottom: 1px solid var(--outline);
++    display: grid;
++    grid-template-columns: 1fr auto;
++    align-items: center;
++    gap: 8px;
+   }
+-  .content { padding: 22px; }
+-}
++
++  .content {
++    padding: 22px;
++  }
++}
+\ No newline at end of file
+diff --git a/assets/js/art.js b/assets/js/art.js
+index 947d08f..a8b58af 100644
+--- a/assets/js/art.js
++++ b/assets/js/art.js
+@@ -86,7 +86,7 @@
+   }
+   `;
+ 
+-  function compile(type, src){
++  function compile(type, src) {
+     const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+     if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); }
+     return s;
+@@ -100,7 +100,7 @@
+ 
+   const quad = gl.createBuffer();
+   gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
++  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+   const locA = gl.getAttribLocation(prog, 'a');
+   gl.enableVertexAttribArray(locA);
+   gl.vertexAttribPointer(locA, 2, gl.FLOAT, false, 0, 0);
+@@ -123,9 +123,9 @@
+       const { c1, c2 } = JSON.parse(saved);
+       if (Array.isArray(c1) && Array.isArray(c2)) { color1 = c1; color2 = c2; }
+     }
+-  } catch {}
++  } catch { }
+ 
+-  function render(time){
++  function render(time) {
+     gl.uniform2f(u_res, canvas.width, canvas.height);
+     gl.uniform1f(u_time, time * 0.001);
+     gl.uniform3f(u_c1, color1[0], color1[1], color1[2]);
+@@ -136,10 +136,11 @@
+     if (!paused) requestAnimationFrame(render);
+   }
+ 
+-  let paused = false;
++  // Respect reduced motion preference by default
++  let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   const artBtn = document.getElementById('toggle-art');
+   const focusBtn = document.getElementById('toggle-focus');
+-  function setPaused(p){ paused = p; }
++  function setPaused(p) { paused = p; }
+   if (artBtn) {
+     artBtn.addEventListener('click', () => {
+       setPaused(/On/.test(artBtn.textContent) ? false : true);
+@@ -152,9 +153,18 @@
+     });
+   }
+ 
++  // Pause/resume on reduced-motion preference changes
++  try {
++    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
++    mql.addEventListener('change', (e) => {
++      setPaused(e.matches);
++      if (!paused) requestAnimationFrame(render);
++    });
++  } catch { }
++
+   document.addEventListener('visibilitychange', () => {
+     if (!document.hidden && !paused) requestAnimationFrame(render);
+   });
+ 
+-  requestAnimationFrame(render);
++  if (!paused) requestAnimationFrame(render);
+ })();
+diff --git a/assets/js/site.js b/assets/js/site.js
+index 220a386..95033a9 100644
+--- a/assets/js/site.js
++++ b/assets/js/site.js
+@@ -1,5 +1,5 @@
+ // Entrance reveal animations via IntersectionObserver
+-(function() {
++(function () {
+   const observer = new IntersectionObserver(entries => {
+     for (const entry of entries) {
+       if (entry.isIntersecting) {
+@@ -21,9 +21,9 @@
+ })();
+ 
+ // Smooth scroll for internal anchors
+-(function() {
++(function () {
+   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+-    anchor.addEventListener('click', function(e) {
++    anchor.addEventListener('click', function (e) {
+       const href = this.getAttribute('href');
+       if (!href || href.length < 2) return;
+       const target = document.querySelector(href);
+@@ -35,8 +35,8 @@
+ })();
+ 
+ // Magnetic hover effect for cards
+-(function() {
+-  const strength = 18;
++(function () {
++  const strength = 14; // soften tilt for readability
+   const root = document.documentElement;
+   const set = (card, tx, ty) => {
+     card.style.setProperty('--tx', `${tx}px`);
+@@ -72,18 +72,24 @@
+ })();
+ 
+ // UX toggles: Focus mode and High contrast (persisted)
+-(function() {
++(function () {
+   const body = document.body;
+   const focusBtn = document.getElementById('toggle-focus');
+   const contrastBtn = document.getElementById('toggle-contrast');
+   const artBtn = document.getElementById('toggle-art');
++  const fieldBtn = document.getElementById('toggle-field');
+   const sync = () => {
+     try {
+       localStorage.setItem('ux-prefs', JSON.stringify({
+         focus: body.classList.contains('focus-mode'),
+-        contrast: body.classList.contains('high-contrast')
++        contrast: body.classList.contains('high-contrast'),
++        field: body.classList.contains('trippy') ? 'trippy' : body.classList.contains('playful') ? 'playful' : 'chill',
++        art: (() => {
++          const span = artBtn && artBtn.querySelector('span');
++          return span ? /On/.test(span.textContent || '') : true;
++        })()
+       }));
+-    } catch {}
++    } catch { }
+   };
+   try {
+     const saved = localStorage.getItem('ux-prefs');
+@@ -91,8 +97,19 @@
+       const prefs = JSON.parse(saved);
+       if (prefs.focus) body.classList.add('focus-mode');
+       if (prefs.contrast) body.classList.add('high-contrast');
++      if (prefs.field) {
++        body.classList.remove('chill', 'playful', 'trippy');
++        body.classList.add(prefs.field);
++        if (fieldBtn) fieldBtn.querySelector('span').textContent = prefs.field.charAt(0).toUpperCase() + prefs.field.slice(1);
++      }
++      if (artBtn && Object.prototype.hasOwnProperty.call(prefs, 'art')) {
++        const span = artBtn.querySelector('span');
++        if (span) span.textContent = prefs.art ? 'On' : 'Off';
++        const canvas = document.getElementById('art-canvas');
++        if (canvas) canvas.style.opacity = prefs.art ? '' : '0';
++      }
+     }
+-  } catch {}
++  } catch { }
+ 
+   if (focusBtn) {
+     focusBtn.addEventListener('click', () => {
+@@ -112,10 +129,35 @@
+       sync();
+     });
+   }
++
++  if (fieldBtn) {
++    const cycle = () => {
++      const order = ['chill', 'playful', 'trippy'];
++      const current = order.find(k => body.classList.contains(k)) || 'chill';
++      const next = order[(order.indexOf(current) + 1) % order.length];
++      body.classList.remove('chill', 'playful', 'trippy');
++      body.classList.add(next);
++      fieldBtn.querySelector('span').textContent = next.charAt(0).toUpperCase() + next.slice(1);
++      sync();
++    };
++    fieldBtn.addEventListener('click', cycle);
++  }
++
++  if (artBtn) {
++    artBtn.addEventListener('click', () => {
++      const span = artBtn.querySelector('span');
++      if (!span) return;
++      const next = /On/.test(span.textContent || '') ? 'Off' : 'On';
++      span.textContent = next;
++      const canvas = document.getElementById('art-canvas');
++      if (canvas) canvas.style.opacity = next === 'On' ? '' : '0';
++      sync();
++    });
++  }
+ })();
+ 
+ // Progressive enhancement: hydrate Featured with live GitHub data (if allowed by CORS)
+-(function() {
++(function () {
+   const container = document.getElementById('featured');
+   if (!container) return;
+   const username = 'acaradonna';
+@@ -129,7 +171,7 @@
+       container.innerHTML = '';
+       for (const repo of repos) {
+         const a = document.createElement('a');
+-        a.className = 'card reveal in';
++        a.className = 'card feral reveal in';
+         a.href = repo.html_url;
+         a.target = '_blank';
+         a.rel = 'noopener noreferrer';
+@@ -143,5 +185,5 @@
+         container.appendChild(a);
+       }
+     })
+-    .catch(() => {});
++    .catch(() => { });
+ })();
+diff --git a/docs/effects.html b/docs/effects.html
+new file mode 100644
+index 0000000..e677f44
+--- /dev/null
++++ b/docs/effects.html
+@@ -0,0 +1,30 @@
++---
++layout: default
++title: Effects Sandbox
++---
++
++<section>
++  <h2>Effects Sandbox</h2>
++  <p>Preview signature effects, motion, and accessibility fallbacks.</p>
++
++  <h3>Liquid Split</h3>
++  <div class="container liquid-split" style="height: 220px; position:relative; overflow:hidden;">
++    <p>Section with upward drip divider.</p>
++  </div>
++
++  <h3>Feral Corner</h3>
++  <div class="grid" style="margin-top:12px">
++    <a class="card feral" href="#" onclick="return false;">
++      <div class="repo-name">Feral Card</div>
++      <div class="repo-desc">Corner morphing signature on hover (reduced-motion safe).</div>
++      <div class="badges"><span class="badge">Demo</span></div>
++    </a>
++  </div>
++
++  <h3>Sacred Field</h3>
++  <div class="container" style="min-height:120px">
++    <p>The field intensity can be cycled via the sidebar control.</p>
++  </div>
++</section>
++
++
+diff --git a/index.html b/index.html
+index 64a2f6b..25f3726 100644
+--- a/index.html
++++ b/index.html
+@@ -3,7 +3,7 @@ layout: default
+ title: Home
+ ---
+ 
+-<section class="hero">
++<section class="hero liquid-split">
+   <div class="glow"></div>
+   <h1>Hi, I'm Alex.</h1>
+   <p class="lead">I build reliable software and systems that ship.</p>
+@@ -18,7 +18,7 @@ title: Home
+   <div class="grid" id="featured">
+     {% assign pinned = site.data.links.projects | slice: 0, 6 %}
+     {% for project in pinned %}
+-    <a class="card" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
++    <a class="card feral" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
+       <div class="repo-name">{{ project.name }}</div>
+       <div class="repo-desc">{{ project.description | default: 'Repository' }}</div>
+       <div class="badges">
+@@ -28,4 +28,4 @@ title: Home
+     </a>
+     {% endfor %}
+   </div>
+-</section>
++</section>
+\ No newline at end of file
