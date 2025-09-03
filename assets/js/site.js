@@ -1,5 +1,5 @@
 // Entrance reveal animations via IntersectionObserver
-(function() {
+(function () {
   const observer = new IntersectionObserver(entries => {
     for (const entry of entries) {
       if (entry.isIntersecting) {
@@ -21,9 +21,9 @@
 })();
 
 // Smooth scroll for internal anchors
-(function() {
+(function () {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
       if (!href || href.length < 2) return;
       const target = document.querySelector(href);
@@ -35,8 +35,8 @@
 })();
 
 // Magnetic hover effect for cards
-(function() {
-  const strength = 18;
+(function () {
+  const strength = 14; // soften tilt for readability
   const root = document.documentElement;
   const set = (card, tx, ty) => {
     card.style.setProperty('--tx', `${tx}px`);
@@ -72,18 +72,24 @@
 })();
 
 // UX toggles: Focus mode and High contrast (persisted)
-(function() {
+(function () {
   const body = document.body;
   const focusBtn = document.getElementById('toggle-focus');
   const contrastBtn = document.getElementById('toggle-contrast');
   const artBtn = document.getElementById('toggle-art');
+  const fieldBtn = document.getElementById('toggle-field');
   const sync = () => {
     try {
       localStorage.setItem('ux-prefs', JSON.stringify({
         focus: body.classList.contains('focus-mode'),
-        contrast: body.classList.contains('high-contrast')
+        contrast: body.classList.contains('high-contrast'),
+        field: body.classList.contains('trippy') ? 'trippy' : body.classList.contains('playful') ? 'playful' : 'chill',
+        art: (() => {
+          const span = artBtn && artBtn.querySelector('span');
+          return span ? /On/.test(span.textContent || '') : true;
+        })()
       }));
-    } catch {}
+    } catch { }
   };
   try {
     const saved = localStorage.getItem('ux-prefs');
@@ -91,8 +97,19 @@
       const prefs = JSON.parse(saved);
       if (prefs.focus) body.classList.add('focus-mode');
       if (prefs.contrast) body.classList.add('high-contrast');
+      if (prefs.field) {
+        body.classList.remove('chill', 'playful', 'trippy');
+        body.classList.add(prefs.field);
+        if (fieldBtn) fieldBtn.querySelector('span').textContent = prefs.field.charAt(0).toUpperCase() + prefs.field.slice(1);
+      }
+      if (artBtn && Object.prototype.hasOwnProperty.call(prefs, 'art')) {
+        const span = artBtn.querySelector('span');
+        if (span) span.textContent = prefs.art ? 'On' : 'Off';
+        const canvas = document.getElementById('art-canvas');
+        if (canvas) canvas.style.opacity = prefs.art ? '' : '0';
+      }
     }
-  } catch {}
+  } catch { }
 
   if (focusBtn) {
     focusBtn.addEventListener('click', () => {
@@ -112,10 +129,35 @@
       sync();
     });
   }
+
+  if (fieldBtn) {
+    const cycle = () => {
+      const order = ['chill', 'playful', 'trippy'];
+      const current = order.find(k => body.classList.contains(k)) || 'chill';
+      const next = order[(order.indexOf(current) + 1) % order.length];
+      body.classList.remove('chill', 'playful', 'trippy');
+      body.classList.add(next);
+      fieldBtn.querySelector('span').textContent = next.charAt(0).toUpperCase() + next.slice(1);
+      sync();
+    };
+    fieldBtn.addEventListener('click', cycle);
+  }
+
+  if (artBtn) {
+    artBtn.addEventListener('click', () => {
+      const span = artBtn.querySelector('span');
+      if (!span) return;
+      const next = /On/.test(span.textContent || '') ? 'Off' : 'On';
+      span.textContent = next;
+      const canvas = document.getElementById('art-canvas');
+      if (canvas) canvas.style.opacity = next === 'On' ? '' : '0';
+      sync();
+    });
+  }
 })();
 
 // Progressive enhancement: hydrate Featured with live GitHub data (if allowed by CORS)
-(function() {
+(function () {
   const container = document.getElementById('featured');
   if (!container) return;
   const username = 'acaradonna';
@@ -129,7 +171,7 @@
       container.innerHTML = '';
       for (const repo of repos) {
         const a = document.createElement('a');
-        a.className = 'card reveal in';
+        a.className = 'card feral reveal in';
         a.href = repo.html_url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
@@ -143,5 +185,5 @@
         container.appendChild(a);
       }
     })
-    .catch(() => {});
+    .catch(() => { });
 })();

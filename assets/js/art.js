@@ -86,7 +86,7 @@
   }
   `;
 
-  function compile(type, src){
+  function compile(type, src) {
     const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
     if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); }
     return s;
@@ -100,7 +100,7 @@
 
   const quad = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, quad);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const locA = gl.getAttribLocation(prog, 'a');
   gl.enableVertexAttribArray(locA);
   gl.vertexAttribPointer(locA, 2, gl.FLOAT, false, 0, 0);
@@ -123,9 +123,9 @@
       const { c1, c2 } = JSON.parse(saved);
       if (Array.isArray(c1) && Array.isArray(c2)) { color1 = c1; color2 = c2; }
     }
-  } catch {}
+  } catch { }
 
-  function render(time){
+  function render(time) {
     gl.uniform2f(u_res, canvas.width, canvas.height);
     gl.uniform1f(u_time, time * 0.001);
     gl.uniform3f(u_c1, color1[0], color1[1], color1[2]);
@@ -136,10 +136,11 @@
     if (!paused) requestAnimationFrame(render);
   }
 
-  let paused = false;
+  // Respect reduced motion preference by default
+  let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const artBtn = document.getElementById('toggle-art');
   const focusBtn = document.getElementById('toggle-focus');
-  function setPaused(p){ paused = p; }
+  function setPaused(p) { paused = p; }
   if (artBtn) {
     artBtn.addEventListener('click', () => {
       setPaused(/On/.test(artBtn.textContent) ? false : true);
@@ -152,9 +153,18 @@
     });
   }
 
+  // Pause/resume on reduced-motion preference changes
+  try {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mql.addEventListener('change', (e) => {
+      setPaused(e.matches);
+      if (!paused) requestAnimationFrame(render);
+    });
+  } catch { }
+
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && !paused) requestAnimationFrame(render);
   });
 
-  requestAnimationFrame(render);
+  if (!paused) requestAnimationFrame(render);
 })();

@@ -18,7 +18,7 @@
   <meta name="theme-color" content="#0b1020" />
   <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 </head>
-<body>
+<body class="sacred-field chill">
   <canvas id="art-canvas" aria-hidden="true"></canvas>
   <div class="site">
     <aside class="sidebar">
@@ -36,6 +36,7 @@
         <a href="/resume">Resume</a>
         <button id="toggle-art" class="toggle">Art mode: <span>On</span></button>
         <button id="cycle-palette" class="toggle" aria-label="Cycle color palette">Palette: <span>Aurora</span></button>
+        <button id="toggle-field" class="toggle" aria-label="Cycle sacred field intensity">Field: <span>Chill</span></button>
         <button id="toggle-focus" class="toggle" aria-pressed="false">Focus mode: <span>Off</span></button>
         <button id="toggle-contrast" class="toggle" aria-pressed="false">High contrast: <span>Off</span></button>
       </nav>
@@ -58,6 +59,11 @@
         <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
         <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
         <feBlend in="SourceGraphic" in2="goo" />
+      </filter>
+      <!-- Liquid Split filter for upward drip divider -->
+      <filter id="liquidSplit" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence baseFrequency="0.004" numOctaves="2" seed="3" result="turb" />
+        <feDisplacementMap in2="turb" in="SourceGraphic" scale="20" />
       </filter>
     </defs>
   </svg>

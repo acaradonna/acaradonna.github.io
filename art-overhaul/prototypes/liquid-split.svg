@@ -1,0 +1,13 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='800' height='200'>
+  <defs>
+    <filter id='liquidSplit'>
+      <feTurbulence baseFrequency='0.004' numOctaves='2' seed='3' result='turb'/>
+      <feDisplacementMap in2='turb' in='SourceGraphic' scale='20'/>
+    </filter>
+    <linearGradient id='split' x1='0' x2='0' y1='0' y2='1'>
+      <stop offset='0%' stop-color='#0d173a'/>
+      <stop offset='100%' stop-color='#5588f7'/>
+    </linearGradient>
+  </defs>
+  <rect x='0' y='100' width='800' height='100' fill='url(#split)' filter='url(#liquidSplit)'/>
+</svg>
