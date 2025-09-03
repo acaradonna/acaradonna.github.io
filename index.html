@@ -15,7 +15,7 @@ title: Home
 
 <section style="margin-top:22px">
   <h2>Featured</h2>
-  <div class="grid">
+  <div class="grid" id="featured">
     {% assign pinned = site.data.links.projects | slice: 0, 6 %}
     {% for project in pinned %}
     <a class="card" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">

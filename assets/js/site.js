@@ -47,3 +47,35 @@
     });
   }, true);
 })();
+
+// Progressive enhancement: hydrate Featured with live GitHub data (if allowed by CORS)
+(function() {
+  const container = document.getElementById('featured');
+  if (!container) return;
+  const username = 'acaradonna';
+  // Public GitHub API with unauthenticated rate limits (60/hr). This is best-effort.
+  fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`)
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(list => list.slice(0, 12))
+    .then(repos => {
+      // Only replace if data looks valid
+      if (!Array.isArray(repos) || repos.length === 0) return;
+      container.innerHTML = '';
+      for (const repo of repos) {
+        const a = document.createElement('a');
+        a.className = 'card reveal';
+        a.href = repo.html_url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.innerHTML = `
+          <div class="repo-name">${repo.name}</div>
+          <div class="repo-desc">${repo.description ?? 'Repository'}</div>
+          <div class="badges">
+            ${repo.language ? `<span class="badge">${repo.language}</span>` : ''}
+            <span class="badge muted">★ ${repo.stargazers_count}</span>
+          </div>`;
+        container.appendChild(a);
+      }
+    })
+    .catch(() => {});
+})();
