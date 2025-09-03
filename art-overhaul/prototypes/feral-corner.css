@@ -1,0 +1,4 @@
+.feral{--corner:18px;--wob:6px;mask:
+ radial-gradient(120% 120% at 100% 0,transparent 0 calc(var(--corner)+var(--wob)),#000 calc(var(--corner)+var(--wob)+2px))}
+.feral:hover{--wob:10px}
+@media (prefers-reduced-motion:reduce){.feral:hover{--wob:0}}
