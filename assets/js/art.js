@@ -6,6 +6,7 @@
   const ctx = canvas.getContext('2d', { alpha: true });
   let width = 0, height = 0, dpr = Math.max(1, window.devicePixelRatio || 1);
   let running = true;
+  let bloom = true;
 
   const resize = () => {
     width = window.innerWidth; height = window.innerHeight;
@@ -76,7 +77,7 @@
 
     // Faint motion blur to create bloom-like trails
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = 'rgba(10,14,30,0.07)';
+    ctx.fillStyle = 'rgba(10,14,30,0.06)';
     ctx.fillRect(0, 0, width, height);
 
     ctx.globalCompositeOperation = 'lighter';
@@ -95,12 +96,12 @@
 
       // Draw with subtle radial gradient per particle
       const r = p.size * (1 + Math.sin(p.life * 0.01) * 0.5);
-      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 30 * r);
+      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 36 * r);
       grad.addColorStop(0, p.color);
       grad.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 20 * r, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, 22 * r, 0, Math.PI * 2);
       ctx.fill();
     }
 

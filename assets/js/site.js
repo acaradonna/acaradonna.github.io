@@ -62,7 +62,12 @@
     });
   });
   document.addEventListener('mouseleave', () => {
-    document.querySelectorAll('.card').forEach(card => set(card, 0, 0));
+    document.querySelectorAll('.card').forEach(card => {
+      set(card, 0, 0);
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+      card.style.setProperty('--mx', '50%');
+    });
   }, true);
 })();
 
