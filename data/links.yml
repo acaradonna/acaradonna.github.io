@@ -7,12 +7,42 @@ contact:
     url: https://soundcloud.com/alpackle
 
 projects:
-  - name: Harmony
+  - name: goblin-camp
+    url: https://github.com/acaradonna/goblin-camp
+    description: Systems-heavy sim game experiments in Rust.
+    language: Rust
+    stars: 1
+    topics: []
+  - name: universal-sso
+    url: https://github.com/acaradonna/universal-sso
+    description: Quickstart SSO with Keycloak, API + Web scaffolding.
+    language: JavaScript
+    stars: 0
+    topics: []
+  - name: chocoswap
+    url: https://github.com/acaradonna/chocoswap
+    description: Solidity-based DEX experiments and contracts.
+    language: Solidity
+    stars: 0
+    topics: []
+  - name: harmony
     url: https://github.com/acaradonna/harmony
-    description: A next.js app where I'm building a simple AI-powered chatbot.
-  - name: Plex API Python Library
-    url: https://example.com/project2
-    description: A Python library using the Plex API to do things that are normally hard to achieve with the API/UI alone
+    description: Agentic AI + PORN stack playground.
+    language: TypeScript
+    stars: 2
+    topics: []
+  - name: leetcode-solutions
+    url: https://github.com/acaradonna/leetcode-solutions
+    description: My solutions to algorithm problems in Python.
+    language: Python
+    stars: 0
+    topics: []
+  - name: Portfolio (this site)
+    url: https://github.com/acaradonna/acaradonna.github.io
+    description: GitHub Pages site for my work.
+    language: HTML
+    stars: 0
+    topics: []
 
 resources:
   - name: Resource 1

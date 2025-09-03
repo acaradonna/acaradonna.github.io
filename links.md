@@ -3,23 +3,25 @@ layout: default
 title: Links
 ---
 
-## Contact
+<h1>Links</h1>
 
+<h2>Contact</h2>
+<ul>
 {% for link in site.data.links.contact %}
+  <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.name }}</a></li>
+{% endfor %}
+</ul>
 
-- [{{ link.name }}]({{ link.url }})
-  {% endfor %}
-
-## Projects
-
+<h2>Projects</h2>
+<ul>
 {% for link in site.data.links.projects %}
+  <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.name }}</a></li>
+{% endfor %}
+</ul>
 
-- [{{ link.name }}]({{ link.url }})
-  {% endfor %}
-
-## Resources
-
+<h2>Resources</h2>
+<ul>
 {% for link in site.data.links.resources %}
-
-- [{{ link.name }}]({{ link.url }})
-  {% endfor %}
+  <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.name }}</a></li>
+{% endfor %}
+</ul>
