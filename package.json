@@ -1,5 +1,12 @@
 {
+  "name": "acaradonna-pages",
+  "private": true,
+  "scripts": {
+    "test": "playwright test --reporter=list",
+    "test:ci": "playwright test --reporter=github"
+  },
   "devDependencies": {
+    "@playwright/test": "^1.48.2",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-prettier": "^5.2.3",
