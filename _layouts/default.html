@@ -19,6 +19,7 @@
   <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 </head>
 <body>
+  <canvas id="art-canvas" aria-hidden="true"></canvas>
   <div class="site">
     <aside class="sidebar">
       <div class="brand">
@@ -33,6 +34,7 @@
         <a href="/projects">Projects</a>
         <a href="/links">Links</a>
         <a href="/resume">Resume</a>
+        <button id="toggle-art" class="toggle">Art mode: <span>On</span></button>
       </nav>
       <div class="footer">
         <div>© {{ site.time | date: '%Y' }} Alex Caradonna</div>
@@ -47,5 +49,6 @@
   </div>
 
   <script src="/assets/js/site.js?v={{ site.time | date: '%s' }}" defer></script>
+  <script src="/assets/js/art.js?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

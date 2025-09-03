@@ -52,6 +52,13 @@
       const tx = strength * dx;
       const ty = strength * dy;
       set(card, tx, ty);
+      // 3D tilt and moving shine
+      const rx = (-dy * 8).toFixed(2);
+      const ry = (dx * 10).toFixed(2);
+      card.style.setProperty('--rx', `${rx}deg`);
+      card.style.setProperty('--ry', `${ry}deg`);
+      const mx = ((dx + 0.5) * 100).toFixed(2) + '%';
+      card.style.setProperty('--mx', mx);
     });
   });
   document.addEventListener('mouseleave', () => {
