@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ page.title }} • Alex Caradonna</title>
-  <meta name="description" content="Portfolio of Alex Caradonna — software engineer building reliable systems and polished experiences." />
+  <meta name="description"
+    content="Portfolio of Alex Caradonna — software engineer building reliable systems and polished experiences." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Alex Caradonna" />
   <meta property="og:title" content="{{ page.title }} • Alex Caradonna" />
@@ -16,8 +18,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/assets/css/style.css?v={{ site.time | date: '%s' }}" />
   <meta name="theme-color" content="#0b1020" />
-  <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+  <meta name="color-scheme" content="dark light" />
+  <script>document.documentElement.classList.remove('no-js'); document.documentElement.classList.add('js');</script>
 </head>
+
 <body class="sacred-field chill">
   <canvas id="art-canvas" aria-hidden="true"></canvas>
   <div class="site">
@@ -36,7 +40,8 @@
         <a href="/resume">Resume</a>
         <button id="toggle-art" class="toggle">Art mode: <span>On</span></button>
         <button id="cycle-palette" class="toggle" aria-label="Cycle color palette">Palette: <span>Aurora</span></button>
-        <button id="toggle-field" class="toggle" aria-label="Cycle sacred field intensity">Field: <span>Chill</span></button>
+        <button id="toggle-field" class="toggle" aria-label="Cycle sacred field intensity">Field:
+          <span>Chill</span></button>
         <button id="toggle-focus" class="toggle" aria-pressed="false">Focus mode: <span>Off</span></button>
         <button id="toggle-contrast" class="toggle" aria-pressed="false">High contrast: <span>Off</span></button>
       </nav>
@@ -78,4 +83,5 @@
   <script src="/assets/js/site.js?v={{ site.time | date: '%s' }}" defer></script>
   <script src="/assets/js/art.js?v={{ site.time | date: '%s' }}" defer></script>
 </body>
+
 </html>
