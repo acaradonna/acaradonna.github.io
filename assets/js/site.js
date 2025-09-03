@@ -83,7 +83,11 @@
       localStorage.setItem('ux-prefs', JSON.stringify({
         focus: body.classList.contains('focus-mode'),
         contrast: body.classList.contains('high-contrast'),
-        field: body.classList.contains('trippy') ? 'trippy' : body.classList.contains('playful') ? 'playful' : 'chill'
+        field: body.classList.contains('trippy') ? 'trippy' : body.classList.contains('playful') ? 'playful' : 'chill',
+        art: (() => {
+          const span = artBtn && artBtn.querySelector('span');
+          return span ? /On/.test(span.textContent || '') : true;
+        })()
       }));
     } catch { }
   };
@@ -97,6 +101,12 @@
         body.classList.remove('chill', 'playful', 'trippy');
         body.classList.add(prefs.field);
         if (fieldBtn) fieldBtn.querySelector('span').textContent = prefs.field.charAt(0).toUpperCase() + prefs.field.slice(1);
+      }
+      if (artBtn && Object.prototype.hasOwnProperty.call(prefs, 'art')) {
+        const span = artBtn.querySelector('span');
+        if (span) span.textContent = prefs.art ? 'On' : 'Off';
+        const canvas = document.getElementById('art-canvas');
+        if (canvas) canvas.style.opacity = prefs.art ? '' : '0';
       }
     }
   } catch { }
@@ -131,6 +141,18 @@
       sync();
     };
     fieldBtn.addEventListener('click', cycle);
+  }
+
+  if (artBtn) {
+    artBtn.addEventListener('click', () => {
+      const span = artBtn.querySelector('span');
+      if (!span) return;
+      const next = /On/.test(span.textContent || '') ? 'Off' : 'On';
+      span.textContent = next;
+      const canvas = document.getElementById('art-canvas');
+      if (canvas) canvas.style.opacity = next === 'On' ? '' : '0';
+      sync();
+    });
   }
 })();
 
