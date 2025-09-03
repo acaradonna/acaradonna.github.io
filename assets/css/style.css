@@ -196,10 +196,15 @@ h1 {
 }
 
 .hero h1 {
-  background: linear-gradient(90deg, #9ece6a, #7aa2f7, #ff9e64);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
+}
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .hero h1 {
+    background: linear-gradient(90deg, #9ece6a, #7aa2f7, #ff9e64);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 .lead {
@@ -386,13 +391,14 @@ html:not(.js) .reveal {
 }
 
 .sacred-field.trippy {
-  --field-opacity: 0.08;
-  --field-scale: 1.10;
+  --field-opacity: 0.07;
+  --field-scale: 1.06;
 }
 
 /* Liquid Split divider */
 .liquid-split {
   position: relative;
+  z-index: 0;
 }
 
 .liquid-split::after {
@@ -401,8 +407,8 @@ html:not(.js) .reveal {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 38vh;
-  z-index: 0;
+  height: 28vh;
+  z-index: -1;
   background: linear-gradient(180deg, oklch(0.21 0.04 260), oklch(0.42 0.10 240));
   filter: url(#liquidSplit);
 }

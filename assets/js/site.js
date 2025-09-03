@@ -108,6 +108,14 @@
         const canvas = document.getElementById('art-canvas');
         if (canvas) canvas.style.opacity = prefs.art ? '' : '0';
       }
+    } else {
+      // Default art OFF for clarity unless user opts in
+      if (artBtn) {
+        const span = artBtn.querySelector('span');
+        if (span) span.textContent = 'Off';
+      }
+      const canvas = document.getElementById('art-canvas');
+      if (canvas) canvas.style.opacity = '0';
     }
   } catch { }
 
