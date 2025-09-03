@@ -31,22 +31,38 @@
   }
 
   // Particles with additive compositing
-  const PALETTE = [
-    [122, 162, 247], // blue
-    [158, 206, 106], // green
-    [255, 158, 100], // orange
-    [255, 95, 109],  // coral
-    [142, 84, 233],  // purple
-  ];
+  const PALETTES = {
+    Aurora: [
+      [122, 162, 247], // blue
+      [158, 206, 106], // green
+      [255, 158, 100], // orange
+      [255, 95, 109],  // coral
+      [142, 84, 233],  // purple
+    ],
+    Monet: [
+      [186, 208, 228], [214, 228, 188], [249, 224, 180], [199, 165, 199], [167, 205, 211]
+    ],
+    Bauhaus: [
+      [239, 71, 111], [255, 209, 102], [6, 214, 160], [17, 138, 178], [7, 59, 76]
+    ],
+    Vapor: [
+      [255, 0, 128], [0, 255, 255], [255, 255, 0], [0, 128, 255], [255, 0, 255]
+    ]
+  };
+  let paletteName = 'Aurora';
+  let PALETTE = PALETTES[paletteName];
   const particles = [];
   const NUM = Math.min(380, Math.floor(width * height / 9000));
+  function colorFor(index) {
+    const c = PALETTE[index % PALETTE.length];
+    return `rgba(${c[0]}, ${c[1]}, ${c[2]}, 0.06)`;
+  }
   for (let i = 0; i < NUM; i++) {
-    const c = PALETTE[i % PALETTE.length];
     particles.push({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: 0, vy: 0,
-      color: `rgba(${c[0]}, ${c[1]}, ${c[2]}, 0.06)`,
+      color: colorFor(i),
       size: 1 + Math.random() * 1.5,
       life: Math.random() * 1000,
     });
@@ -102,6 +118,22 @@
         lastTime = performance.now();
         requestAnimationFrame(tick);
       }
+    });
+  }
+
+  // Cycle color palettes
+  const cycle = document.getElementById('cycle-palette');
+  if (cycle) {
+    cycle.addEventListener('click', () => {
+      const names = Object.keys(PALETTES);
+      const nextIndex = (names.indexOf(paletteName) + 1) % names.length;
+      paletteName = names[nextIndex];
+      PALETTE = PALETTES[paletteName];
+      cycle.querySelector('span').textContent = paletteName;
+      // Re-tint particles gradually
+      particles.forEach((p, i) => {
+        p.color = colorFor(i + Math.floor(Math.random() * 5));
+      });
     });
   }
 })();
