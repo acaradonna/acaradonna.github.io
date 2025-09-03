@@ -136,7 +136,8 @@
     if (!paused) requestAnimationFrame(render);
   }
 
-  let paused = false;
+  // Respect reduced motion preference by default
+  let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const artBtn = document.getElementById('toggle-art');
   const focusBtn = document.getElementById('toggle-focus');
   function setPaused(p){ paused = p; }
@@ -152,9 +153,18 @@
     });
   }
 
+  // Pause/resume on reduced-motion preference changes
+  try {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    mql.addEventListener('change', (e) => {
+      setPaused(e.matches);
+      if (!paused) requestAnimationFrame(render);
+    });
+  } catch {}
+
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && !paused) requestAnimationFrame(render);
   });
 
-  requestAnimationFrame(render);
+  if (!paused) requestAnimationFrame(render);
 })();

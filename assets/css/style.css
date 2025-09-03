@@ -1,5 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
+/* Design Tokens */
+:root {
+  /* Prefer OKLCH; provide fallbacks via @supports below */
+  --bg: oklch(0.17 0.03 260);
+  --bg-elev: oklch(0.20 0.04 260);
+  --text: oklch(0.93 0.02 260);
+  --muted: oklch(0.78 0.03 260);
+  --primary: oklch(0.72 0.14 240);
+  --accent: oklch(0.72 0.13 140);
+  --warn: oklch(0.75 0.16 60);
+  --card: oklch(0.21 0.04 260);
+  --outline: color-mix(in oklch, white 6%, transparent);
+  --glow: 0 8px 40px color-mix(in oklch, oklch(0.72 0.14 240) 25%, transparent);
+  --dur-fast: 120ms; --dur: 200ms; --dur-slow: 320ms; --ease: cubic-bezier(.2,.7,.2,1);
+  --field-opacity: 0.06; --field-scale: 1;
+}
+@supports not (color: oklch(50% 0.1 200)) {
+  :root {
+    --bg: #0b1020; --bg-elev: #0f1530; --text: #e7e9ee; --muted: #a8b0c0;
+    --primary: #7aa2f7; --accent: #9ece6a; --warn: #ff9e64; --card: #111831;
+    --outline: rgba(255,255,255,0.06); --glow: 0 8px 40px rgba(122,162,247,0.25);
+  }
+}
+
 :root {
   --bg: #0b1020;
   --bg-elev: #0f1530;
@@ -62,7 +86,7 @@ body.high-contrast {
 #art-canvas {
   position: fixed; inset: 0; width: 100%; height: 100%;
   z-index: 0; pointer-events: none;
-  transition: opacity 260ms ease;
+  transition: opacity var(--dur) var(--ease);
 }
 
 .sidebar {
@@ -109,7 +133,7 @@ body.high-contrast {
   color: var(--text);
   text-decoration: none;
   border: 1px solid transparent;
-  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  transition: transform var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
 }
 
 .nav a:hover {
@@ -173,7 +197,7 @@ h1 { font-size: 36px; margin: 0 0 8px; }
   border: 1px solid var(--outline);
   --tx: 0px; --ty: 0px; --rx: 0deg; --ry: 0deg; --mx: 50%;
   transform: perspective(800px) translate(var(--tx), var(--ty)) rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
   color: var(--text);
   text-decoration: none;
 }
@@ -188,7 +212,7 @@ h1 { font-size: 36px; margin: 0 0 8px; }
   position: absolute; inset: 0; border-radius: inherit;
   background: radial-gradient(220px 90px at var(--mx) -20%, rgba(255,255,255,0.16), transparent 60%);
   opacity: 0; pointer-events: none;
-  transition: opacity 180ms ease;
+  transition: opacity var(--dur) var(--ease);
 }
 .card:hover::before { opacity: 1; }
 
@@ -236,12 +260,46 @@ h1 { font-size: 36px; margin: 0 0 8px; }
 }
 
 .reveal { opacity: 0; transform: translateY(10px); }
-.reveal.in { opacity: 1; transform: none; transition: all 560ms cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; transition: all 560ms var(--ease); }
 html:not(.js) .reveal { opacity: 1; transform: none; }
+
+/* Sacred Field overlay */
+.sacred-field::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url('/art-overhaul/prototypes/sacred-field.svg');
+  background-repeat: repeat; background-size: 60px 52px;
+  opacity: var(--field-opacity);
+  mix-blend-mode: soft-light;
+  transform: scale(var(--field-scale));
+  transform-origin: center;
+}
+.sacred-field.chill { --field-opacity: 0.04; --field-scale: 1; }
+.sacred-field.playful { --field-opacity: 0.06; --field-scale: 1.05; }
+.sacred-field.trippy { --field-opacity: 0.08; --field-scale: 1.10; }
+
+/* Liquid Split divider */
+.liquid-split { position: relative; }
+.liquid-split::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 38vh; z-index: 0;
+  background: linear-gradient(180deg, oklch(0.21 0.04 260), oklch(0.42 0.10 240));
+  filter: url(#liquidSplit);
+}
+@supports not (color: oklch(50% 0.1 200)) {
+  .liquid-split::after { background: linear-gradient(180deg, #121a39, #335fff); }
+}
+
+/* Feral Corner utility */
+.feral { --corner-size: 18px; --corner-wobble: 6px; }
+.feral {
+  -webkit-mask-image: radial-gradient(120% 120% at 100% 0, transparent 0 calc(var(--corner-size) + var(--corner-wobble)), #000 calc(var(--corner-size) + var(--corner-wobble) + 2px));
+  mask-image: radial-gradient(120% 120% at 100% 0, transparent 0 calc(var(--corner-size) + var(--corner-wobble)), #000 calc(var(--corner-size) + var(--corner-wobble) + 2px));
+}
+.feral:hover { --corner-wobble: 10px; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
+  .liquid-split::after { filter: none; }
 }
 
 @media (max-width: 980px) {

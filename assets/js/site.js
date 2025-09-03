@@ -36,7 +36,7 @@
 
 // Magnetic hover effect for cards
 (function() {
-  const strength = 18;
+  const strength = 14; // soften tilt for readability
   const root = document.documentElement;
   const set = (card, tx, ty) => {
     card.style.setProperty('--tx', `${tx}px`);
@@ -77,11 +77,13 @@
   const focusBtn = document.getElementById('toggle-focus');
   const contrastBtn = document.getElementById('toggle-contrast');
   const artBtn = document.getElementById('toggle-art');
+  const fieldBtn = document.getElementById('toggle-field');
   const sync = () => {
     try {
       localStorage.setItem('ux-prefs', JSON.stringify({
         focus: body.classList.contains('focus-mode'),
-        contrast: body.classList.contains('high-contrast')
+        contrast: body.classList.contains('high-contrast'),
+        field: body.classList.contains('trippy') ? 'trippy' : body.classList.contains('playful') ? 'playful' : 'chill'
       }));
     } catch {}
   };
@@ -91,6 +93,11 @@
       const prefs = JSON.parse(saved);
       if (prefs.focus) body.classList.add('focus-mode');
       if (prefs.contrast) body.classList.add('high-contrast');
+      if (prefs.field) {
+        body.classList.remove('chill','playful','trippy');
+        body.classList.add(prefs.field);
+        if (fieldBtn) fieldBtn.querySelector('span').textContent = prefs.field.charAt(0).toUpperCase() + prefs.field.slice(1);
+      }
     }
   } catch {}
 
@@ -112,6 +119,19 @@
       sync();
     });
   }
+
+  if (fieldBtn) {
+    const cycle = () => {
+      const order = ['chill','playful','trippy'];
+      const current = order.find(k => body.classList.contains(k)) || 'chill';
+      const next = order[(order.indexOf(current) + 1) % order.length];
+      body.classList.remove('chill','playful','trippy');
+      body.classList.add(next);
+      fieldBtn.querySelector('span').textContent = next.charAt(0).toUpperCase() + next.slice(1);
+      sync();
+    };
+    fieldBtn.addEventListener('click', cycle);
+  }
 })();
 
 // Progressive enhancement: hydrate Featured with live GitHub data (if allowed by CORS)
@@ -129,7 +149,7 @@
       container.innerHTML = '';
       for (const repo of repos) {
         const a = document.createElement('a');
-        a.className = 'card reveal in';
+        a.className = 'card feral reveal in';
         a.href = repo.html_url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
